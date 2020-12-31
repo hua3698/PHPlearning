@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>XMLHttpRequest</title>
+    <link rel="shortcut icon" href="#" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        li{
+            padding: 5px;
+            box-shadow: 0 0 5px #ccc;
+            margin: 5px 0;
+            font-size: 1rem;
+        }
+        li:nth-child(odd){
+            color: burlywood;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="header">XMLHttpRequest</h1>
+    <div class="title"></div>
+    <h4>活動標題</h4>
+    <ul>活動資訊</ul>
+
+</body>
+</html>
+<script>
+    /********************************************************
+    * 1.api網址  https://kktix.com/events.json
+    * 2.宣告一個XMLHttpRequest物件
+    * 3.建立請求的各項設定及實質內容
+    * 4.建立得到回應時的各項行為
+    * 5.送出請求
+    
+    * xml是js的原生函式庫 
+    ********************************************************/
+
+    //宣告一個XMLHttpRequest物件
+        let xhr=new XMLHttpRequest
+
+    //建立請求的各項設定及實質內容
+        xhr.open('get','https://kktix.com/events.json',true)
+
+    //建立得到回應時的各項設定及行為
+        xhr.onload=function(){  //response
+            let data=xhr.responseText
+            let set=JSON.parse(data)
+            console.log(set)
+            let h4=document.getElementsByTagName('h4')[0]
+            h4.innerHTML=set.title
+            let events=set.entry
+            let html="";
+            for(let i=0;i<events.length;i++){
+                html=html+`<li><a href="${events[i].url}">${events[i].title}</a></li>`
+            }
+            let ul=document.getElementsByTagName('ul')[0]
+            ul.innerHTML=html;
+
+        }
+
+    //送出請求
+        xhr.send();
+
+
+    /*err code
+        200 請求成功
+        300 授權成功
+        400 找不到系列
+        404 網址錯誤
+        500 內部錯誤
+    */
+    </script>
